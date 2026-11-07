@@ -1,2 +1,10 @@
+[project]
+name = "smart-irrigation-advisor"
+version = "0.1.0"
+dependencies = [
+    "Flask>=3.0",
+    "gunicorn>=22.0",
+]
+
 [tool.vercel]
 entrypoint = "run:app"
