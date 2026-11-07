@@ -67,7 +67,7 @@ SQLite history is stored in the app's `instance/` folder; use a persistent Repli
 or an external database if saved history must survive redeployments.
 
 ## 8. Deploying on Vercel
-The repository includes `vercel.json` and `api/index.py` for Vercel's Python runtime.
+The repository includes `pyproject.toml` with the Flask application entry point for Vercel.
 Import the GitHub repository into Vercel and deploy with the default settings.
 Vercel's function filesystem is temporary, so SQLite history is not durable across
 function instances or deployments. Configure `DATABASE` to use a persistent database
