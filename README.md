@@ -65,3 +65,10 @@ Import the GitHub repository into Replit, then use **Deploy** to publish it. The
 needs to install `requirements.txt` and run `gunicorn --bind 0.0.0.0:3000 run:app`.
 SQLite history is stored in the app's `instance/` folder; use a persistent Replit deployment
 or an external database if saved history must survive redeployments.
+
+## 8. Deploying on Vercel
+The repository includes `vercel.json` and `api/index.py` for Vercel's Python runtime.
+Import the GitHub repository into Vercel and deploy with the default settings.
+Vercel's function filesystem is temporary, so SQLite history is not durable across
+function instances or deployments. Configure `DATABASE` to use a persistent database
+before relying on saved history in production.
