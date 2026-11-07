@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="top">
+  <h1>Today’s irrigation advice</h1>
+  <p>Enter field conditions. Get how much water to apply, and for how long.</p>
+</header>
+<main class="layout">
+  <form id="form" class="panel" novalidate>
+    <fieldset>
+      <legend>Crop and soil</legend>
+      <label>Crop
+        <select name="crop">{% for c in crops %}<option>{{ c }}</option>{% endfor %}</select></label>
+      <label>Growth stage
+        <select name="stage">{% for s in stages %}<option value="{{ s }}" {{ 'selected' if s == 'mid' }}>{{ s|capitalize }}</option>{% endfor %}</select></label>
+      <label>Soil type
+        <select name="soil">{% for s in soils %}<option {{ 'selected' if s == 'Loam' }}>{{ s }}</option>{% endfor %}</select></label>
+      <label>Soil moisture (% by volume)
+        <input type="number" name="moisture" value="20" min="0" max="60" step="0.1" required></label>
+    </fieldset>
+    <fieldset>
+      <legend>Weather</legend>
+      <label>Max temp (°C)<input type="number" name="tmax" value="32" step="0.1" required></label>
+      <label>Min temp (°C)<input type="number" name="tmin" value="18" step="0.1" required></label>
+      <label>Humidity (%)<input type="number" name="humidity" value="45" min="0" max="100" required></label>
+      <label>Rain forecast, next 48 h (mm)<input type="number" name="rain" value="0" min="0" step="0.1" required></label>
+      <label>Latitude (°N)<input type="number" name="lat" value="25.4" step="0.1" min="-60" max="60" required></label>
+    </fieldset>
+    <fieldset>
+      <legend>Your system</legend>
+      <label>Field area (m²)<input type="number" name="area" value="1000" min="1" required></label>
+      <label>Method
+        <select name="method">{% for m in methods %}<option>{{ m }}</option>{% endfor %}</select></label>
+      <label>Pump flow (litres/hour)<input type="number" name="flow" value="2000" min="1" required></label>
+    </fieldset>
+    <button type="submit">Get recommendation</button>
+    <ul id="errors" class="error" role="alert"></ul>
+  </form>
+
+  <section class="panel" aria-live="polite">
+    <div class="empty" id="empty">
+      <h2>No recommendation yet</h2>
+      <p>Fill in the form and select <b>Get recommendation</b>.</p>
+    </div>
+    <div id="output" hidden>
+      <div class="verdict" id="verdict"><h2 id="msg"></h2></div>
+      <div class="body">
+        <div class="gauge" aria-label="Root-zone water level">
+          <div class="tube">
+            <div class="fill" id="fill"></div>
+            <div class="trigger" id="trigger"><span>Irrigate below here</span></div>
+          </div>
+          <div class="g-labels"><span>Field capacity</span><span id="gpct"></span><span>Wilting point</span></div>
+        </div>
+        <dl class="facts">
+          <div class="big"><dt>Apply</dt><dd><span id="litres"></span> L</dd></div>
+          <div><dt>Run pump for</dt><dd><span id="hours"></span> h</dd></div>
+          <div><dt>Water depth</dt><dd><span id="gross"></span> mm</dd></div>
+          <div><dt>Crop water use today</dt><dd><span id="etc"></span> mm/day</dd></div>
+          <div><dt>Reference ET₀</dt><dd><span id="et0"></span> mm/day</dd></div>
+          <div><dt>Crop coefficient Kc</dt><dd><span id="kc"></span></dd></div>
+          <div><dt>Soil deficit</dt><dd><span id="depl"></span> mm</dd></div>
+          <div><dt>Stress threshold (RAW)</dt><dd><span id="raw"></span> mm</dd></div>
+          <div><dt>Effective rain</dt><dd><span id="rain"></span> mm</dd></div>
+          <div><dt>Days until trigger</dt><dd><span id="days"></span></dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

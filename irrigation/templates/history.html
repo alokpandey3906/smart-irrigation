@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}History · Smart Irrigation Advisor{% endblock %}
+{% block content %}
+<header class="top">
+  <h1>Recommendation history</h1>
+  <p>Every recommendation is saved so you can review past decisions.</p>
+</header>
+<main class="wrap">
+  <section class="panel">
+    {% if records %}
+    <div class="actions">
+      <a class="btn" href="{{ url_for('main.history_csv') }}">Download CSV</a>
+      <form method="post" action="{{ url_for('main.history_clear') }}"
+            onsubmit="return confirm('Delete all saved recommendations?')">
+        <button class="danger" type="submit">Clear history</button>
+      </form>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Time (UTC)</th><th>Crop</th><th>Stage</th><th>Soil</th><th>Method</th><th>Decision</th><th>Litres</th><th>Pump hours</th></tr></thead>
+        <tbody>
+        {% for r in records %}
+          <tr><td>{{ r.created_at }}</td><td>{{ r.crop }}</td><td>{{ r.stage|capitalize }}</td><td>{{ r.soil }}</td><td>{{ r.method }}</td>
+              <td><span class="tag {{ r.level }}">{{ r.level }}</span></td><td>{{ '{:,}'.format(r.litres) }}</td><td>{{ r.hours }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty"><h2>No history yet</h2><p>Get a recommendation on the <a href="{{ url_for('main.index') }}">Advisor</a> page and it will appear here.</p></div>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}

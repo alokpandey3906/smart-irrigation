@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Smart Irrigation Advisor{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="{{ url_for('main.index') }}">Smart Irrigation Advisor</a>
+  <div>
+    <a href="{{ url_for('main.index') }}">Advisor</a>
+    <a href="{{ url_for('main.history') }}">History</a>
+  </div>
+</nav>
+{% block content %}{% endblock %}
+<footer class="foot">Advice is based on a simplified FAO-56 model. Check it against local conditions before relying on it.</footer>
+</body>
+</html>
